@@ -1,0 +1,32 @@
+use CJA_UNIVER;
+
+--1
+SELECT distinct PULPIT.PULPIT_NAME as 'Кафедра', FACULTY.FACULTY as 'Факультет', PROFESSION.PROFESSION_NAME as 'Специальность'
+	from PULPIT, FACULTY, PROFESSION
+	where PULPIT.FACULTY=FACULTY.FACULTY
+		and PROFESSION_NAME In (Select PROFESSION_NAME from PROFESSION
+						Where (PROFESSION_NAME Like '%технология%')
+							or (PROFESSION_NAME Like '%технологий%'));
+
+--2
+SELECT distinct PULPIT.PULPIT_NAME as 'Кафедра', FACULTY.FACULTY as 'Факультет', PROFESSION.PROFESSION_NAME as 'Специальность'
+	from PROFESSION, PULPIT inner join FACULTY
+	On PULPIT.FACULTY=FACULTY.FACULTY
+	where PROFESSION_NAME In (Select PROFESSION_NAME from PROFESSION
+						Where (PROFESSION_NAME Like '%технология%')
+							or (PROFESSION_NAME Like '%технологий%'));
+							
+--3
+SELECT distinct PULPIT.PULPIT_NAME as 'Кафедра', FACULTY_NAME as 'Факультет'
+	FROM PULPIT
+	inner join PROFESSION 
+		on  (PROFESSION.PROFESSION_NAME like '%технология%' or PROFESSION.PROFESSION_NAME like '%технологии%')
+	inner join FACULTY
+		on PROFESSION.FACULTY = FACULTY.FACULTY and PROFESSION.FACULTY = PULPIT.FACULTY 
+	
+----4
+--SELECT AUDITORIUM_CAPACITY, AUDITORIUM_TYPE
+--	from AUDITORIUM a
+--	where AUDITORIUM_CAPACITY=(select top(3) AUDITORIUM_CAPACITY from AUDITORIUM aa
+--		where aa.AUDITORIUM_CAPACITY=a.AUDITORIUM_CAPACITY
+--			order by AUDITORIUM_CAPACITY desc)
